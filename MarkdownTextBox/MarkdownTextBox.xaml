@@ -1,0 +1,29 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:local="using:MarkdownTextBox">
+
+
+
+    <Style TargetType="local:MarkdownTextBox" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:MarkdownTextBox">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <TextBox Text="{TemplateBinding Text}"/>
+                        <ct:MarkdownTextBlock 
+                            Text="{TemplateBinding Text}" 
+                            Grid.Row="1"/>
+
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

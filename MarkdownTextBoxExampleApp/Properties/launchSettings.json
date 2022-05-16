@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MarkdownTextBoxExampleApp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MarkdownTextBoxExampleApp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
