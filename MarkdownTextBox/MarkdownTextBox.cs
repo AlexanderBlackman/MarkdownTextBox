@@ -15,20 +15,20 @@ using CommunityToolkit.WinUI.UI.Controls;
 
 namespace MarkdownTextBox
 {
-    [TemplatePart(Name = nameof(MarkdownTextBox.InputTextBox), Type = typeof(TextBox))]
-    [TemplatePart(Name = nameof(PreviewMarkdownBlock), Type = typeof(MarkdownTextBlock))]
-    [TemplatePart(Name = nameof(MTBGrid), Type = typeof(Grid))]
+    //[TemplatePart(Name = nameof(MarkdownTextBox.InputTextBox), Type = typeof(TextBox))]
+    //[TemplatePart(Name = nameof(PreviewMarkdownBlock), Type = typeof(MarkdownTextBlock))]
+    //[TemplatePart(Name = nameof(MTBGrid), Type = typeof(Grid))]
+    [TemplatePart(Name = "InputTextBox", Type = typeof(TextBox))]
+    [TemplatePart(Name = "PreviewMarkdownBlock", Type = typeof(MarkdownTextBlock))]
+    [TemplatePart(Name = "MTBGrid", Type = typeof(Grid))]
     public sealed class MarkdownTextBox : Control
     {
 
-        // Template Parts
-        //private const string MarkdownPreviewPartName = "PART_Markdown";
-        //private const string ContainerPartName = "PART_Container";
-        //private const string InputTextPartName = "PART_InputText";
 
-        private TextBox InputTextBox;
-        private MarkdownTextBlock PreviewMarkdownBlock;
-        private Grid MTBGrid;
+
+        private TextBox _inputTextBox;
+        private MarkdownTextBlock _previewMarkdownBlock;
+        private Grid _MTBGrid;
 
         public MarkdownTextBox()
         {
@@ -37,7 +37,6 @@ namespace MarkdownTextBox
             // WinUI3 workaround for https://github.com/microsoft/microsoft-ui-xaml/issues/3502
             this.DefaultStyleResourceUri = new Uri("ms-appx:///MarkdownTextBox/Themes/Generic.xaml");
 
-            //MarkdownPreview.Text = Text;
         }
 
 
@@ -47,13 +46,28 @@ namespace MarkdownTextBox
 
         protected override void OnApplyTemplate()
         {
-            this.InputTextBox = this.GetTemplateChild<TextBox>(nameof(InputTextBox));
+            //this.InputTextBox = this.GetTemplateChild<TextBox>(nameof(InputTextBox));
 
-            this.PreviewMarkdownBlock = this.GetTemplateChild<MarkdownTextBlock>(nameof(PreviewMarkdownBlock));
-            this.MTBGrid = this.GetTemplateChild<Grid>(nameof(MTBGrid));
+            //this.PreviewMarkdownBlock = this.GetTemplateChild<MarkdownTextBlock>(nameof(PreviewMarkdownBlock));
+            //this.MTBGrid = this.GetTemplateChild<Grid>(nameof(MTBGrid));
+
+            _MTBGrid = GetTemplateChild("MTBGrid") as Grid;
+            _previewMarkdownBlock = GetTemplateChild("PreviewMarkdownBlock") as MarkdownTextBlock;
+            _inputTextBox = GetTemplateChild("InputTextBox") as TextBox;
+            _previewMarkdownBlock.Text = _inputTextBox.Text;
+
+
 
             base.OnApplyTemplate();
 
+        }
+
+        private static void UpdateMarkdownBlock(MarkdownTextBox markdownTBControl, MarkdownTextBlock markdownPreview, String newValue)
+        {
+            if (markdownPreview != null)
+            {
+                markdownPreview.Text = newValue;
+            }
         }
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

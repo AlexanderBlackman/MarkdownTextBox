@@ -10,15 +10,14 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:MarkdownTextBox">
-                    <Grid>
+                    <Grid x:Name="MTBGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        <TextBox Text="{TemplateBinding Text}"/>
-                        <ct:MarkdownTextBlock 
-
-                            Text="{TemplateBinding Text}" 
+                        <TextBox x:Name="InputTextBox" 
+                            Text="{TemplateBinding Text}" />
+                        <ct:MarkdownTextBlock x:Name="PreviewMarkdownBlock"
                             Grid.Row="1"/>
 
 
