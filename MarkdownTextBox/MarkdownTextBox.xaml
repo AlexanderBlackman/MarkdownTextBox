@@ -17,6 +17,7 @@
                         </Grid.RowDefinitions>
                         <TextBox Text="{TemplateBinding Text}"/>
                         <ct:MarkdownTextBlock 
+
                             Text="{TemplateBinding Text}" 
                             Grid.Row="1"/>
 

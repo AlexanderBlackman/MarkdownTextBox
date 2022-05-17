@@ -15,24 +15,56 @@ using CommunityToolkit.WinUI.UI.Controls;
 
 namespace MarkdownTextBox
 {
-    [TemplatePart(Name = "MarkdownPreview", Type = typeof(MarkdownTextBlock))]
-    public sealed class MarkdownTextBox : TextBox
+    [TemplatePart(Name = nameof(MarkdownTextBox.InputTextBox), Type = typeof(TextBox))]
+    [TemplatePart(Name = nameof(PreviewMarkdownBlock), Type = typeof(MarkdownTextBlock))]
+    [TemplatePart(Name = nameof(MTBGrid), Type = typeof(Grid))]
+    public sealed class MarkdownTextBox : Control
     {
-        public MarkdownTextBlock? MarkdownPreview { get; set; }
+
+        // Template Parts
+        //private const string MarkdownPreviewPartName = "PART_Markdown";
+        //private const string ContainerPartName = "PART_Container";
+        //private const string InputTextPartName = "PART_InputText";
+
+        private TextBox InputTextBox;
+        private MarkdownTextBlock PreviewMarkdownBlock;
+        private Grid MTBGrid;
+
         public MarkdownTextBox()
         {
             this.DefaultStyleKey = typeof(MarkdownTextBox);
 
+            // WinUI3 workaround for https://github.com/microsoft/microsoft-ui-xaml/issues/3502
+            this.DefaultStyleResourceUri = new Uri("ms-appx:///MarkdownTextBox/Themes/Generic.xaml");
 
+            //MarkdownPreview.Text = Text;
         }
+
+
+
+
+
 
         protected override void OnApplyTemplate()
         {
+            this.InputTextBox = this.GetTemplateChild<TextBox>(nameof(InputTextBox));
+
+            this.PreviewMarkdownBlock = this.GetTemplateChild<MarkdownTextBlock>(nameof(PreviewMarkdownBlock));
+            this.MTBGrid = this.GetTemplateChild<Grid>(nameof(MTBGrid));
+
             base.OnApplyTemplate();
-            MarkdownPreview = GetTemplateChild("MarkdownPreview") as MarkdownTextBlock;
 
         }
 
+        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+        {
+
+            //  String textBoxText = (d as TextBox).Text;
+            //  if (textBoxText != null)
+            //MarkdownPreview.Text = textBoxText; 
+            //e.NewValue as String;
+        }
 
         public string Text
         {
@@ -41,6 +73,26 @@ namespace MarkdownTextBox
         }
 
 
+        /// <summary>
+        /// Retrieves the named element in the instantiated ControlTemplate visual tree.
+        /// </summary>
+        /// <param name="childName">The name of the element to find.</param>
+        /// <param name="isRequired">Whether the element is required and will throw an exception if missing.</param>
+        /// <returns>The template child matching the given name and type.</returns>
+        private T GetTemplateChild<T>(string childName, bool isRequired = false)
+            where T : DependencyObject
+        {
+            T child = this.GetTemplateChild(childName) as T;
+            if ((child == null) && isRequired)
+            {
+                ThrowArgumentNullException();
+            }
+
+            return child;
+
+            static void ThrowArgumentNullException() => throw new ArgumentNullException(nameof(childName));
+        }
+
 
         DependencyProperty TextProperty = DependencyProperty.Register(
             nameof(Text),
@@ -48,10 +100,7 @@ namespace MarkdownTextBox
             typeof(MarkdownTextBox),
             new PropertyMetadata(default(String), new PropertyChangedCallback(OnTextChanged)));
 
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            MarkdownPreview.Text = e.NewValue as String;
-        }
+
 
         //public bool HasTextValue { get; set; }
         //private static void OnTextChanged
